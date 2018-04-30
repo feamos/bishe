@@ -13,7 +13,15 @@ const state = {
   // oldgoods
   searchtext: '',
   active: 1,
-  index: 0
+  index: 0,
+  // register
+  sigUp: {
+    qq: '',
+    userName: '',
+    userPassword: '',
+    reUserPassword: '',
+    email: ''
+  }
 }
 const mutations = {
   //  oldgoods
@@ -27,7 +35,11 @@ const mutations = {
     state.index = index
   }
 }
-const actions = {}
+const actions = {
+  sigup (context) {
+    console.log('1234')
+  }
+}
 export default new Vuex.Store({
   state,
   mutations,

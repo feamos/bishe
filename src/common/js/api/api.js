@@ -1,4 +1,4 @@
-const _APIHOST_ = 'http://neuq.shop:8082/campus'
+const _APIHOST_ = 'http://47.93.31.220/campus'
 const userApiMaker = (path) => {
   return `${_APIHOST_}/${path}`
 }

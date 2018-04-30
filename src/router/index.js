@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../components/home.vue'
+//      二手
 import Oldgoods from '../components/oldgoods.vue'
 import newgoods from '@/components/new-goods.vue'
 import study from '@/components/study.vue'
@@ -12,6 +13,10 @@ import food from '@/components/food.vue'
 import other from '@/components/other.vue'
 import sell from '../components/sell.vue'
 
+//      personal
+import Register from '../components/register.vue'
+import signIn from '../components/signIn.vue'
+import signUp from '../components/signUp.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -20,6 +25,16 @@ export default new Router({
       path: '/',
       name: 'HelloWorld',
       component: Home
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register,
+      children: [
+        {path: '', redirect: '/signIn'},
+        {path: '/signIn', component: signIn},
+        {path: '/signUp', component: signUp}
+      ]
     },
     {
       path: '/sell',

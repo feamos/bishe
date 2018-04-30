@@ -14,7 +14,7 @@
     <div class="newgoods">
       <img src="../img/goods/newTitle.png" alt="最新物品">
       <ul>
-        <li v-for="goodDetail in ninegoods">
+        <li v-for="(goodDetail, index) in ninegoods" v-bind:key="index">
           <good :goodDetail="goodDetail"></good>
         </li>
       </ul>

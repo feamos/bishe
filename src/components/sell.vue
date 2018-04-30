@@ -11,7 +11,7 @@
       <div class="four">
         <label for="fenlei"><span id="red">*</span>物品分类：</label>
         <Select id="fenlei" v-model="model1" style="width:100px;">
-          <Option v-for="item in cityList" :value="item.value" :key="item.value" v-model="goodInfo.goodSort">{{ item.label }}</Option>
+          <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </div>
 
@@ -57,7 +57,7 @@ import selectPicture from './selectpicture.vue'
 export default {
   data () {
     return {
-      goodName: '',
+      goodName: '123',
       cityList: [
         {
           value: 'sdf ',
