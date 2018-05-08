@@ -17,7 +17,7 @@
 
       <div class="rememberAndForget">
         <span>
-          <input type="checkbox" checked>记住密码
+          <Checkbox v-model="single">记住密码</Checkbox>
         </span>
         <span>忘记密码>></span>
       </div>
@@ -33,19 +33,23 @@
 </template>
 
 <script type="text/javascript">
-//  import router from '../router'
-import store from '../vuex/store'
+import API from '../common/js/api/api.js'
 export default{
-
   data () {
     return {
-      sigIn: {
-        userName: '',
-        userPassword: ''
-      }
+      single: true
     }
   },
   computed: {
+    sigIn () {
+      return this.$store.state.sigIn
+    }
+  },
+  mounted () {
+    if (localStorage.getItem('userPassword') && localStorage.getItem('userPassword')) {
+      this.sigIn.userName = localStorage.getItem('userName')
+      this.sigIn.userPassword = localStorage.getItem('userPassword')
+    }
   },
   methods: {
     // 用户点击“快速去注册”触发父组件(register.vue)的事件
@@ -53,46 +57,40 @@ export default{
       this.$emit('changeState')
     },
     // 登录
-    btn_sigin () {
-      console.log(this.$store.state.sigIn)
-      let userData = {
-        userName: this.sigIn.userName,
-        userPassword: this.sigIn.userPassword
+    getUrl (url, data) {
+      url += (url.indexOf('?') === -1 ? '?' : '&')
+      for (var name in data) {
+        url += ((url.indexOf('=') !== -1) ? '&' : '') + name + '=' + encodeURIComponent(data[name])
       }
-      fetch('http://192.168.1.103:8080/campus/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
+      return url
+    },
+    btn_sigin () {
+      var urlSign = this.getUrl(API.login, this.$store.state.sigIn)
+      //      console.log(urlSign)
+      fetch(urlSign, {
+        method: 'get'
       }).then((res) => res.json())
-        .then((json) => {
-          this.$store.state.head.userName = this.sigIn.userName
+        .then(json => {
+          if (json.status === 200) {
+            this.$Message.info('登录成功！')
+            localStorage.setItem('token', json.data)
+            if (this.single) {
+              localStorage.setItem('userName', this.sigIn.userName)
+              localStorage.setItem('userPassword', this.sigIn.userPassword)
+            } else {
+              localStorage.removeItem('userName')
+              localStorage.removeItem('userPassword')
+            }
+            this.$store.state.head.userName = this.sigIn.userName
+            this.$router.push('/')
+            console.log(json)
+          }
+          if (json.status === 400) {
+            this.$Message.info(json.data)
+          }
         })
     }
-
-    //      // 登录后获得用户名和用户头像
-    //      signIn () {
-    //        // this.errors.add('userName', '用户名/邮箱不存在');
-    //        this.formData = $(".form").serialize();
-    //        this.$http.post('http://localhost/my/LoginServlet', this.formData)
-    //          .then(response => {
-    //            console.log(response)
-    //            this.userName = response.data[0].userName
-    //            //  that.userHead = response.data.data.userHead;
-    //            //  触发父组件(register)给App.vue传值
-    //            this.$emit('userSignIn', this.userName)
-    //            //  路由到主页
-    //            router.push({
-    //              path: '/'
-    //            })
-    //          })
-    //          .catch(error => {
-    //            console.log(error)
-    //          })
-    //      }
-  },
-  store
+  }
 }
 </script>
 
@@ -155,6 +153,9 @@ export default{
     width: 204px;
     height: 34px;
     background: url("../img/register/登录按钮.png") no-repeat;
+  }
+  .warn {
+    visibility: hidden;
   }
   .footer {
     padding-top: 30px;

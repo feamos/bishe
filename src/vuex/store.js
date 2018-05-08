@@ -21,6 +21,11 @@ const state = {
     userPassword: '',
     reUserPassword: '',
     email: ''
+  },
+  // sigIn
+  sigIn: {
+    userName: '',
+    userPassword: ''
   }
 }
 const mutations = {
@@ -33,6 +38,10 @@ const mutations = {
   },
   selectActive (state, index) {
     state.index = index
+  },
+  // sigUp
+  updateSignUp (state, value) {
+    state.sigUp = value
   }
 }
 const actions = {

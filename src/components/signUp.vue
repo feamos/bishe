@@ -71,9 +71,6 @@ export default{
     sigUp: {
       get () {
         return this.$store.state.sigUp
-      },
-      set (value) {
-        this.$store.commit('updateSigup', value)
       }
     }
   },
@@ -160,9 +157,26 @@ export default{
         body: JSON.stringify(submitRegister)
       }).then((res) => res.json())
         .then((json) => {
+          if (json.status === 400) {
+            console.log(json.data)
+            let msg = ''
+            for (var value in json.data) {
+              if (json.data[value] === 1) {
+                msg = value
+              }
+            }
+            switch (msg) {
+              case 'usernameExistError':
+                this.nametext = '用户名已存在'
+                this.boolName = true
+                this.nameColor = false
+                this.accessName = false
+                break
+            }
+          }
           if (json.status === 200) {
-            console.log('注册成功')
-          //            this.$router.push('/oldgoods')
+            this.$Message.info('注册成功！')
+            this.$router.push('/')
           }
         })
     }

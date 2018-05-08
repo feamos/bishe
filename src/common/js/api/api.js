@@ -5,5 +5,6 @@ const userApiMaker = (path) => {
 export default {
   login: userApiMaker('login'),
   register: userApiMaker('registUser'),
-  getGoodsByNew: userApiMaker('getGoodsByNew')
+  getGoodsByNew: userApiMaker('getGoodsByNew'),
+  quit: userApiMaker('quit')
 }
