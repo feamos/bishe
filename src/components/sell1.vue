@@ -70,7 +70,7 @@
 </template>
 <script>
 import vueCropper from '../../node_modules/vue-cropper'
-import API from '../common/js/api/api.js'
+//      import API from '../common/js/api/api.js'
 export default {
   data () {
     return {
@@ -206,36 +206,48 @@ export default {
       this.imgsArr.splice(i, 1)
     },
     subBtn () {
-      if (!(this.godInfor.model2 && this.godInfor.godName && this.godInfor.godMaster && this.godInfor.godPictures.length && this.godInfor.godPrice && this.godInfor.godDesc)) {
+      if (!(this.godInfor.model2 && this.godInfor.godName && this.godInfor.godMaster && this.godInfor.godPictures.length === 3 && this.godInfor.godPrice && this.godInfor.godDesc)) {
         this.$Message.info('请填写正确的信息！')
         return false
       }
-      let formdata = new FormData()
-      formdata.append('userName', this.$store.state.head.userName)
-      formdata.append('goodName', this.godInfor.godName)
-      formdata.append('goodSort', this.godInfor.model2)
-      formdata.append('goodPrice', this.godInfor.godPrice)
-      formdata.append('sellerTel', this.godInfor.godMaster)
-      formdata.append('goodDesc', this.godInfor.godDesc)
-      let pic0 = this.dataURItoBlob(this.godInfor.godPictures[0])
-      formdata.append('goodPicture0', pic0)
-      if (this.godInfor.godPictures[1]) {
-        let pic1 = this.dataURItoBlob(this.godInfor.godPictures[1])
-        formdata.append('goodPicture1', pic1)
+      //      let formdata = new FormData()
+      //      formdata.append('userName', this.$store.state.head.userName)
+      //      formdata.append('goodName', this.godInfor.godName)
+      //      formdata.append('goodSort', this.godInfor.model2)
+      //      formdata.append('goodPrice', this.godInfor.godPrice)
+      //      formdata.append('sellerTel', this.godInfor.godMaster)
+      //      formdata.append('goodDesc', this.godInfor.godDesc)
+      //      let pic0 = this.dataURItoBlob(this.godInfor.godPictures[0])
+      //      formdata.append('goodPicture0', pic0)
+      //      if (this.godInfor.godPictures[1]) {
+      //        let pic1 = this.dataURItoBlob(this.godInfor.godPictures[1])
+      //        formdata.append('goodPicture1', pic1)
+      //      }
+      //      if (this.godInfor.godPictures[2]) {
+      //        let pic2 = this.dataURItoBlob(this.godInfor.godPictures[2])
+      //        formdata.append('goodPicture2', pic2)
+      //      }
+      //      formdata.append('token', localStorage.getItem('token'))
+      let godData = {
+        token: localStorage.getItem('token'),
+        userName: this.$store.state.head.userName,
+        goodName: this.godInfor.godName,
+        goodSort: this.godInfor.model2,
+        goodPrice: this.godInfor.godPrice,
+        sellerTel: this.godInfor.godMaster,
+        goodDesc: this.godInfor.godDesc,
+        goodPicture0: this.godInfor.godPictures[0].split(',')[1],
+        goodPicture1: this.godInfor.godPictures[1].split(',')[1],
+        goodPicture2: this.godInfor.godPictures[2].split(',')[1]
       }
-      if (this.godInfor.godPictures[2]) {
-        let pic2 = this.dataURItoBlob(this.godInfor.godPictures[2])
-        formdata.append('goodPicture2', pic2)
-      }
-      formdata.append('token', localStorage.getItem('token'))
-      fetch(API.publishGoods, {
-        method: 'post',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        body: formdata
-      }).then(res => console.log(res))
+      console.log(godData)
+      //      fetch(API.publishGoods, {
+      //        method: 'post',
+      //        headers: {
+      //          'Content-Type': 'application/json'
+      //        },
+      //        body: JSON.stringify(godData)
+      //      }).then(res => console.log(res))
     }
   },
   components: {
