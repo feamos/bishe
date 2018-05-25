@@ -19,9 +19,6 @@
       <li class="tab-item">
         <router-link to="/active" tag="span">活动</router-link>
       </li>
-      <li class="tab-item">
-        <router-link to="/attend" tag="span">代课</router-link>
-      </li>
     </ul>
     <span class="login" v-show="!userName">
         <router-link to="/register"><img src="../img/header/登录.png" alt="登录"></router-link>
@@ -47,6 +44,11 @@ export default {
   data () {
     return {
       msg: 'head'
+    }
+  },
+  mounted () {
+    if (localStorage.getItem('userName')) {
+      this.$store.state.head.userName = localStorage.getItem('userName')
     }
   },
   computed: {

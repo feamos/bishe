@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import iView from 'iview'
+import API from '../common/js/api/api.js'
 
 Vue.use(iView)
 Vue.use(Vuex)
@@ -12,8 +13,9 @@ const state = {
   },
   // oldgoods
   searchtext: '',
-  active: 1,
-  index: 0,
+  newGoods: {},
+  // sell
+  imgsArr: [],
   // register
   sigUp: {
     qq: '',
@@ -47,6 +49,16 @@ const mutations = {
 const actions = {
   sigup (context) {
     console.log('1234')
+  },
+  huode (context) {
+    console.log(context.state.newGoods)
+    fetch(API.getGoodsByNew, {
+      method: 'get'
+    }).then(res => res.json())
+      .then(json => {
+        context.state.newGoods = json.data
+        console.log(context.state.newGoods)
+      })
   }
 }
 export default new Vuex.Store({

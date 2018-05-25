@@ -6,5 +6,6 @@ export default {
   login: userApiMaker('login'),
   register: userApiMaker('registUser'),
   getGoodsByNew: userApiMaker('getGoodsByNew'),
-  quit: userApiMaker('quit')
+  quit: userApiMaker('quit'),
+  publishGoods: userApiMaker('publishGoods')
 }

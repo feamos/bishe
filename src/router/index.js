@@ -11,7 +11,7 @@ import clothes from '@/components/clothes.vue'
 import hat from '@/components/hat.vue'
 import food from '@/components/food.vue'
 import other from '@/components/other.vue'
-import sell from '../components/sell.vue'
+import sell from '../components/sell1.vue'
 
 //      personal
 import Register from '../components/register.vue'

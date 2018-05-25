@@ -28,20 +28,53 @@ import good from './good.vue'
 import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   data () {
-    return {}
+    return {
+      clickmore: true,
+      timer: {},
+      active: 1,
+      index: 0,
+      currentIndex: 0
+    }
   },
   mounted () {
     this.$nextTick(() => {
-      this.beginnext()
+      this.slide()
     })
   },
   computed: {
-    ...mapState(['newGoods', 'currentIndex', 'clickmore', 'ninegoods'])
+    ...mapState(['newGoods', 'clickmore', 'ninegoods'])
   },
 
   methods: {
-    ...mapMutations(['stop', 'slide', 'last', 'next']),
-    ...mapActions(['beginnext', 'more'])
+    ...mapMutations(['stop']),
+    ...mapActions(['more']),
+    autoPlay () {
+      this.currentIndex += 3
+      if (this.currentIndex > this.newGoods.length - 1) {
+        this.currentIndex = 0
+      }
+    },
+    slide () {
+      this.timer = setInterval(() => {
+        this.autoPlay()
+      }, 4000)
+    },
+    stop () {
+      clearInterval(this.timer)
+      this.timer = null
+    },
+    last () {
+      if (this.currentIndex === 0) {
+        this.currentIndex = this.newGoods.length
+      }
+      this.currentIndex -= 3
+    },
+    next () {
+      this.currentIndex += 3
+      if (this.currentIndex > this.newGoods.length - 1) {
+        this.currentIndex = 0
+      }
+    }
   },
   components: {
     good

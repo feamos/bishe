@@ -89,12 +89,14 @@ export default {
       this.$refs.searchDom.click()
     },
     toSell () {
-      //        if (!this.userName) {
-      //          this.$router.push('/register')
-      //        } else {
-      //          this.$router.push('/sell')
-      //        }
-      this.$router.push('/sell')
+      console.log('1')
+      console.log(!this.$store.state.head.userName)
+      console.log('2')
+      if (!this.$store.state.head.userName) {
+        this.$router.push('/register')
+      } else {
+        this.$router.push('/sell')
+      }
     }
   },
   store
