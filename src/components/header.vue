@@ -30,7 +30,7 @@
         <Icon type="arrow-down-b"></Icon>
       </a>
       <DropdownMenu slot="list" class='personLi'>
-        <DropdownItem>个人中心</DropdownItem>
+        <DropdownItem><span @click="toPersonal">个人中心</span></DropdownItem>
         <DropdownItem><span @click="quitSign">退出</span></DropdownItem>
       </DropdownMenu>
     </Dropdown>
@@ -63,6 +63,12 @@ export default {
   },
   methods: {
     quitSign () {
+      localStorage.removeItem('token')
+      this.userName = ''
+      localStorage.removeItem('userName')
+      localStorage.removeItem('userPassword')
+      this.$Message.info('退出成功！')
+      this.$router.push('/oldgoods')
       fetch(API.quit, {
         method: 'post',
         headers: {
@@ -75,9 +81,14 @@ export default {
           if (json.status === 200) {
             localStorage.removeItem('token')
             this.userName = ''
+            localStorage.removeItem('userName')
+            localStorage.removeItem('userPassword')
             this.$Message.info('退出成功！')
           }
         })
+    },
+    toPersonal () {
+      this.$router.push('/personal')
     }
   }
 }

@@ -1,20 +1,30 @@
 <template>
-  <div class="banner_wrapper">
-    <transition-group tag="ul" name="list">
-      <li v-for="(goodDetail, index) in studyGoods" :key="index">
+  <div class="newgoods">
+    <ul>
+      <li v-for="(goodDetail, index) in others" v-bind:key="index">
         <good :goodDetail="goodDetail"></good>
       </li>
-    </transition-group>
+    </ul>
   </div>
 </template>
 
 <script>
 import good from './good'
 import store from '../vuex/store'
-import { mapState } from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
   computed: {
-    ...mapState(['studyGoods'])
+    others: {
+      get () {
+        return this.$store.state.others
+      }
+    }
+  },
+  destroyed () {
+    this.reserve()
+  },
+  methods: {
+    ...mapMutations(['reserve'])
   },
   components: {
     good
@@ -29,6 +39,7 @@ export default {
     overflow: hidden;
     float: left;
     margin-left: 320px;
+    padding-top: 40px;
   }
 
   ul {
@@ -41,5 +52,29 @@ export default {
     display: inline-block;
     margin-right: 50px;
     margin-bottom: 40px;
+  }
+  .newgoods {
+    width: 1060px;
+    margin:0 auto;
+  }
+  .newgoods ul {
+    margin-top: 10px;
+  }
+  .newgoods ul li {
+    display: inline-block;
+    margin-top: 20px;
+    margin-right: 20px;
+  }
+  .newgoods ul li:nth-child(3n) {
+    margin-right: 0;
+  }
+  .newgoods .more {
+    display: inline-block;
+    margin-top: 10px;
+  }
+  .newgoods .more img {
+    cursor: pointer;
+  }
+  @media (max-width:1000px) {
   }
 </style>

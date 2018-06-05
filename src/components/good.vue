@@ -3,7 +3,7 @@
 <template>
   <div class="good_component">
     <a href="" @mouseenter="showDetail" @mouseleave="hideDetail">
-      <img :src="'http://neuq.shop:8082/campus/goodsPicture/' + goodDetail.goodPicture0 " alt="加入图片地址接口">
+      <img :src="'http://47.93.31.220/campus/' + goodDetail.goodPicture0 " alt="加入图片地址接口">
     </a>
     <div class="nameAndPrice">
       <span class="nameleft">{{goodDetail.goodName}}</span>
@@ -73,7 +73,7 @@ export default{
     text-align: right;
     width:44%;
     display: inline-block;
-    color: blue;
+    color: #000000;
     height: 35px;
     line-height: 35px;
   }
@@ -90,7 +90,7 @@ export default{
     position: absolute;
     left: 0;
     top: 0;
-    width: 70px;
+    width: 100px;
     height: 35px;
     background: url("../img/good/标签bg.png") no-repeat;
     z-index: 20;

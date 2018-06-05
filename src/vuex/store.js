@@ -13,9 +13,33 @@ const state = {
   },
   // oldgoods
   searchtext: '',
+  searchGoods: [],
   newGoods: {},
+  active: 0,
+  index: 0,
+  goodInfo: {},
+  // new-goods
+  latestGoods: [],
+  // sort
+  study: {},
+  life: {},
+  sports: {},
+  clothes: {},
+  hats: {},
+  foods: {},
+  others: {},
   // sell
-  imgsArr: [],
+  godInfor: {
+    goodSort: '',
+    goodName: '',
+    sellerTel: '',
+    godPictures: [],
+    goodPrice: '',
+    goodDesc: '',
+    goodPicture0: '',
+    goodPicture1: '',
+    goodPicture2: ''
+  },
   // register
   sigUp: {
     qq: '',
@@ -35,10 +59,14 @@ const mutations = {
   showActive (state, index) {
     state.active = index
   },
+  reserve (state) {
+    state.index = 0
+  },
   hideActive () {
     state.active = 0
   },
   selectActive (state, index) {
+    console.log('将index设为' + index)
     state.index = index
   },
   // sigUp
@@ -51,13 +79,11 @@ const actions = {
     console.log('1234')
   },
   huode (context) {
-    console.log(context.state.newGoods)
     fetch(API.getGoodsByNew, {
       method: 'get'
     }).then(res => res.json())
       .then(json => {
         context.state.newGoods = json.data
-        console.log(context.state.newGoods)
       })
   }
 }

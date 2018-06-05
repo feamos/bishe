@@ -12,11 +12,17 @@ import hat from '@/components/hat.vue'
 import food from '@/components/food.vue'
 import other from '@/components/other.vue'
 import sell from '../components/sell1.vue'
+import sellSuccess from '../components/sellSuccess.vue'
+import search from '../components/search.vue'
+import goodInfo from '../components/goodInfo.vue'
 
 //      personal
 import Register from '../components/register.vue'
 import signIn from '../components/signIn.vue'
 import signUp from '../components/signUp.vue'
+import personal from '../components/personal.vue'
+import changePassw from '../components/changePassw.vue'
+import changeGood from '../components/changeGood.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -42,6 +48,26 @@ export default new Router({
       component: sell
     },
     {
+      path: '/goodInfo',
+      name: 'goodInfo',
+      component: goodInfo
+    },
+    {
+      path: '/personal',
+      name: 'personal',
+      component: personal,
+      children: [
+        {path: '', component: changePassw},
+        {path: 'changeGood', component: changeGood},
+        {path: 'changePassw', component: changePassw}
+      ]
+    },
+    {
+      path: '/sellSuccess',
+      name: 'sellSuccess',
+      component: sellSuccess
+    },
+    {
       path: '/oldgoods',
       name: 'oldgoods',
       component: Oldgoods,
@@ -54,7 +80,8 @@ export default new Router({
         {path: 'clothes', component: clothes},
         {path: 'hat', component: hat},
         {path: 'food', component: food},
-        {path: 'other', component: other}
+        {path: 'other', component: other},
+        {path: 'search', component: search}
       ]
     }
   ]

@@ -6,13 +6,13 @@
     <p><label></label><span class="textTip">带"<span class="red">*</span>"的为必填</span></p>
     <p>
       <label><span class="red">*</span>物品分类</label>
-      <Select v-model="godInfor.model2" size="small" style="width:100px">
+      <Select v-model="godInfor.goodSort" size="small" style="width:100px">
         <Option v-for="item in godClass" :value="item" :key="item">{{ item }}</Option>
       </Select>
     </p>
     <div class="wupin">
       <label for="gName"><span class="red">*</span>物品名称</label>
-      <input type="text" id="gName" v-model="godInfor.godName">
+      <input type="text" id="gName" v-model="godInfor.goodName">
       <p class="textTip"><label></label><span>·请控制在十字以内</span></p>
     </div>
     <p>
@@ -46,7 +46,7 @@
       <ul>
         <li
           v-for="(item, index) in imgsArr"
-          :style="'background: url(' + item + ') no-repeat'"
+          :style="'background: url(' + item + ') no-repeat;background-size: 100% 100%'"
           :key="index"
           @mouseenter="enDelIcon()"
           @mouseleave="leDelIcon()">
@@ -54,14 +54,14 @@
       </ul>
     </div>
     <p>
-      <label><span class="red">*</span>物品价格</label><input type="radio" id="one" name="radio" :value="godInfor.godPrice"  @click="srPrice" checked>
-      <label for="one"><input type="number" id="PRICE" :class="{activeBg: isActive, 'activedBg': isActived}" v-model.number="godInfor.godPrice" @focus="selectCheck" @blur="quitCheck"></label>
+      <label><span class="red">*</span>物品价格</label><input type="radio" id="one" name="radio" :value="godInfor.goodPrice"  @click="srPrice" checked>
+      <label for="one"><input type="number" id="PRICE" :class="{activeBg: isActive, 'activedBg': isActived}" v-model.number="godInfor.goodPrice" @focus="selectCheck" @blur="quitCheck"></label>
       <input type="radio" id="two" value="联系后详谈" name="radio" v-model="godInfor.godPrice">
       <label for="two" class="slBg" @click="slPrice"></label>
     </p>
-    <p><label><span class="red">*</span>联系方式</label><input type="text" v-model="godInfor.godMaster"></p>
+    <p><label><span class="red">*</span>联系方式</label><input type="text" v-model="godInfor.sellerTel"></p>
     <p id="textTip0"><label></label><span class="textTip">·QQ、微信、手机号等均可</span></p>
-    <p><label class="textDesc">物品详细描述</label><textarea name="" id="desc0" cols="40" rows="7" maxlength=200 v-model="godInfor.godDesc"></textarea></p>
+    <p><label class="textDesc">物品详细描述</label><textarea name="" id="desc0" cols="40" rows="7" maxlength=200 v-model="godInfor.goodDesc"></textarea></p>
     <p id="textTip1"><label></label><span class="textTip">·包括几成新、有误破损、物品原价等</span></p>
     <div class="submit">
       <span @click="subBtn"></span>
@@ -70,13 +70,12 @@
 </template>
 <script>
 import vueCropper from '../../node_modules/vue-cropper'
-//      import API from '../common/js/api/api.js'
+import API from '../common/js/api/api.js'
 export default {
   data () {
     return {
       delIcon: false,
-      godClass: ['图书笔记', '百货用品', '服饰鞋帽', '数码电子', '游戏体育', '美妆零食', '其它'],
-      godPrice: '',
+      godClass: ['学习', '生活', '运动', '服饰', '鞋帽', '食品', '其它'],
       isActive: true,
       isActived: false,
       panel: false,
@@ -96,23 +95,13 @@ export default {
         fixed: true,
         fixedNumber: [4, 4]
       },
-      godInfor: {
-        model2: '图书笔记',
-        godName: 'jisuanjiwangluo',
-        godMaster: '231321',
-        godPictures: [],
-        godPrice: '12',
-        godDesc: 'safasdfasfasfasdfasd'
-      }
+      imgsArr: []
     }
   },
   computed: {
-    imgsArr: {
+    godInfor: {
       get () {
-        return this.godInfor.godPictures
-      },
-      set (value) {
-        return this.godInfor.godPictures.push(value)
+        return this.$store.state.godInfor
       }
     }
   },
@@ -206,48 +195,32 @@ export default {
       this.imgsArr.splice(i, 1)
     },
     subBtn () {
-      if (!(this.godInfor.model2 && this.godInfor.godName && this.godInfor.godMaster && this.godInfor.godPictures.length === 3 && this.godInfor.godPrice && this.godInfor.godDesc)) {
+      if (!(this.godInfor.goodSort && this.godInfor.goodName && this.godInfor.sellerTel && this.godInfor.goodPrice && this.godInfor.goodDesc)) {
         this.$Message.info('请填写正确的信息！')
         return false
       }
-      //      let formdata = new FormData()
-      //      formdata.append('userName', this.$store.state.head.userName)
-      //      formdata.append('goodName', this.godInfor.godName)
-      //      formdata.append('goodSort', this.godInfor.model2)
-      //      formdata.append('goodPrice', this.godInfor.godPrice)
-      //      formdata.append('sellerTel', this.godInfor.godMaster)
-      //      formdata.append('goodDesc', this.godInfor.godDesc)
-      //      let pic0 = this.dataURItoBlob(this.godInfor.godPictures[0])
-      //      formdata.append('goodPicture0', pic0)
-      //      if (this.godInfor.godPictures[1]) {
-      //        let pic1 = this.dataURItoBlob(this.godInfor.godPictures[1])
-      //        formdata.append('goodPicture1', pic1)
-      //      }
-      //      if (this.godInfor.godPictures[2]) {
-      //        let pic2 = this.dataURItoBlob(this.godInfor.godPictures[2])
-      //        formdata.append('goodPicture2', pic2)
-      //      }
-      //      formdata.append('token', localStorage.getItem('token'))
-      let godData = {
-        token: localStorage.getItem('token'),
-        userName: this.$store.state.head.userName,
-        goodName: this.godInfor.godName,
-        goodSort: this.godInfor.model2,
-        goodPrice: this.godInfor.godPrice,
-        sellerTel: this.godInfor.godMaster,
-        goodDesc: this.godInfor.godDesc,
-        goodPicture0: this.godInfor.godPictures[0].split(',')[1],
-        goodPicture1: this.godInfor.godPictures[1].split(',')[1],
-        goodPicture2: this.godInfor.godPictures[2].split(',')[1]
+      let submitGood = this.$store.state.godInfor
+      submitGood.goodPicture0 = this.imgsArr[0].split(',')[1]
+      if (this.imgsArr[1]) {
+        submitGood.goodPicture1 = this.imgsArr[1].split(',')[1]
       }
-      console.log(godData)
-      //      fetch(API.publishGoods, {
-      //        method: 'post',
-      //        headers: {
-      //          'Content-Type': 'application/json'
-      //        },
-      //        body: JSON.stringify(godData)
-      //      }).then(res => console.log(res))
+      if (this.imgsArr[2]) {
+        submitGood.goodPicture2 = this.imgsArr[2].split(',')[1]
+      }
+      submitGood.userName = this.$store.state.head.userName
+      fetch(API.publishGoods, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(submitGood)
+      }).then((res) => res.json())
+        .then(json => {
+          if (json.status === 200) {
+            this.$Message.info('发布成功！')
+            this.$router.push('/sellSuccess')
+          }
+        })
     }
   },
   components: {
@@ -279,8 +252,10 @@ export default {
     color: #fe8454;
   }
   .sell {
-    padding: 35px 0 0 300px;
+    padding-top: 35px;
+    margin-left: 270px;
     text-align: left;
+    background: url('../img/sell/亭子bg.png') no-repeat  0;
   }
   .sell p {
     margin: 12px 0 0 0;
@@ -293,6 +268,7 @@ export default {
     font-size: 8px;
     margin: 3px 0 0 0;
     line-height: 12px;
+    display: none;
   }
   .sell .wupin {
     margin: 12px 0 0 0;
@@ -425,5 +401,11 @@ export default {
   .submit span:hover {
     background: url('../img/sell/全填完后.png') no-repeat;
     cursor: pointer;
+  }
+  @media (max-height: 768px) and (max-width:1366px) {
+    .sell {
+      padding: 35px 0 0 200px;
+      margin-left: 0px;
+    }
   }
 </style>

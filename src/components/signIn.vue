@@ -82,8 +82,7 @@ export default{
               localStorage.removeItem('userPassword')
             }
             this.$store.state.head.userName = this.sigIn.userName
-            this.$router.push('/')
-            console.log(json)
+            this.$router.push('/oldgoods')
           }
           if (json.status === 400) {
             this.$Message.info(json.data)

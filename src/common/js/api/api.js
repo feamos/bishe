@@ -7,5 +7,8 @@ export default {
   register: userApiMaker('registUser'),
   getGoodsByNew: userApiMaker('getGoodsByNew'),
   quit: userApiMaker('quit'),
-  publishGoods: userApiMaker('publishGoods')
+  publishGoods: userApiMaker('publishGood'),
+  getGoodsBySort: userApiMaker('getGoodsBySort'),
+  search: userApiMaker('search'),
+  changePassword: userApiMaker('changePassword')
 }

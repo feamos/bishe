@@ -1,7 +1,7 @@
 <template>
   <div class="newgoods">
     <ul>
-      <li v-for="(goodDetail, index) in hats" v-bind:key="index">
+      <li v-for="(goodDetail, index) in searchGoods" v-bind:key="index">
         <good :goodDetail="goodDetail"></good>
       </li>
     </ul>
@@ -11,20 +11,13 @@
 <script>
 import good from './good'
 import store from '../vuex/store'
-import { mapMutations } from 'vuex'
 export default {
   computed: {
-    hats: {
+    searchGoods: {
       get () {
-        return this.$store.state.hats
+        return this.$store.state.searchGoods
       }
     }
-  },
-  destroyed () {
-    this.reserve()
-  },
-  methods: {
-    ...mapMutations(['reserve'])
   },
   components: {
     good

@@ -149,6 +149,7 @@ export default{
     },
     sigup () {
       let submitRegister = this.$store.state.sigUp
+      console.log(submitRegister)
       fetch(API.register, {
         method: 'POST',
         headers: {

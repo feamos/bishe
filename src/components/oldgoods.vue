@@ -3,7 +3,7 @@
     <div class="top-nav">
       <div class="left">
         <input class="search" v-model="searchtext" type="text" @keyup.enter="keyenter">
-        <router-link to="/search" class="search_icon" ><img src="../img/goods/search-icon.png" ref="searchDom" alt="搜索"></router-link>
+        <span class="search_icon" @click="searchGod"><img src="../img/goods/search-icon.png" ref="searchDom" alt="搜索"></span>
         <a class="sell" @click="toSell"><img src="../img/goods/sell.png" alt="卖二手商品"></a>
       </div>
       <span class="right">
@@ -75,23 +75,63 @@
 <script>
 import store from '../vuex/store'
 import { mapState, mapMutations, mapActions } from 'vuex'
+import API from '../common/js/api/api.js'
 export default {
   mounted () {
     this.huode()
   },
+  destroyed () {
+    console.log('oldgoods被销毁！')
+    this.reserve()
+  },
   computed: {
-    ...mapState(['searchtext', 'active', 'index'])
+    ...mapState(['active', 'index']),
+    searchtext: {
+      get () {
+        return this.$store.state.searchtext
+      },
+      set (value) {
+        this.$store.state.searchtext = value
+      }
+    },
+    searchGoods: {
+      get () {
+        return this.$store.state.searchGoods
+      },
+      set (value) {
+        this.$store.state.searchGoods = value
+      }
+    }
   },
   methods: {
-    ...mapMutations(['showActive', 'selectActive', 'hideActive']),
+    ...mapMutations(['showActive', 'selectActive', 'hideActive', 'reserve']),
     ...mapActions(['huode']),
     keyenter () {
       this.$refs.searchDom.click()
     },
+    searchGod () {
+      this.reserve()
+      if (!this.searchtext) {
+        this.$Message.info('请输入您想搜索的商品！')
+        return false
+      }
+      fetch(API.search + '?keyWords=' + this.searchtext, {
+        method: 'GET'
+      }).then(res => res.json())
+        .then(json => {
+          if (json.status === 200) {
+            if (json.data.length) {
+              this.searchGoods = json.data
+              this.$router.push('/oldgoods/search')
+            } else {
+              this.$Message.info('没有找到相关商品！')
+              this.$router.push('/oldgoods')
+            }
+          }
+        })
+      this.searchtext = ''
+    },
     toSell () {
-      console.log('1')
-      console.log(!this.$store.state.head.userName)
-      console.log('2')
       if (!this.$store.state.head.userName) {
         this.$router.push('/register')
       } else {
@@ -124,7 +164,7 @@ export default {
     position: absolute;
     top: 8px;
     left: 20px;
-    font-size: 2.4rem;
+    font-size: 1.4rem;
     line-height: 24px;
     border: none;
     outline:none;
@@ -133,6 +173,7 @@ export default {
     position: absolute;
     top: 10px;
     right: 10px;
+    cursor: pointer;
   }
   .sell {
     position: absolute;
